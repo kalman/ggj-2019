@@ -319,6 +319,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  shellPrefabs:
+  - {fileID: 5132967215192315280, guid: 9afb2653703054ec9b557e6cfc4eebfb, type: 3}
 --- !u!4 &1066077767
 Transform:
   m_ObjectHideFlags: 0
@@ -440,7 +442,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d52afd2b09047475d9ed3944df47fa5d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: aa62c8049cf3d445b85763dba44619ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
