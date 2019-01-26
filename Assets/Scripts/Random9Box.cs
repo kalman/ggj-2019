@@ -6,6 +6,9 @@ public class Random9Box : MonoBehaviour, Collider2DManager.Listener
 {
     public Collider2D target;
     public Collider2D boxPrefab;
+    public GameObject wormPrefab;
+    [Range(0, 0.05f)]
+    public float wormsPerUnit = 0.02f;
 
     private Dictionary<Vector2, Collider2D> boxes = new Dictionary<Vector2, Collider2D>();
 
@@ -34,11 +37,16 @@ public class Random9Box : MonoBehaviour, Collider2DManager.Listener
     {
         GameObject bcObj = GameObject.Instantiate(boxPrefab.gameObject, transform);
         Transform bcTargetTransform = boxPrefab.gameObject.transform;
-        bcObj.transform.position = new Vector3(
+        Vector3 bcPos = new Vector3(
             bcTargetTransform.localScale.x * pos.x,
             bcTargetTransform.localScale.y * pos.y,
             bcTargetTransform.position.z
         );
+        bcObj.transform.position = bcPos;
+        if (pos != Vector2.zero)
+        {
+            SpawnRandomObjects(bcPos - bcTargetTransform.localScale, bcPos + bcTargetTransform.localScale);
+        }
         return bcObj.GetComponent<Collider2D>();
     }
 
@@ -55,6 +63,17 @@ public class Random9Box : MonoBehaviour, Collider2DManager.Listener
                 Generate(boxEntry.Key);
                 return;
             }
+        }
+    }
+
+    private void SpawnRandomObjects(Vector3 topLeft, Vector3 bottomRight)
+    {
+        float rand = Random.value;
+        Vector3 areaVector = bottomRight - topLeft;
+        float area = areaVector.x * areaVector.y;
+        if (area * wormsPerUnit > rand)
+        {
+            GameObject.Instantiate(wormPrefab, topLeft + areaVector / 2f, Quaternion.identity, transform);
         }
     }
 }
