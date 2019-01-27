@@ -7,10 +7,19 @@ public class RandomWalker : MonoBehaviour
     public float restDuration = 1f;
     public float walkDuration = 1f;
     public float walkSpeed = 1f;
+    public float jitter = 1f;
+    public string animatorWalkTag = "Walk";
+
+    private Animator m_animator;
 
     private Vector3 walkDirection;
     private bool isWalking;
     private Timer timer;
+
+    void Awake()
+    {
+        m_animator = GetComponent<Animator>();
+    }
 
     void Start()
     {
@@ -26,12 +35,16 @@ public class RandomWalker : MonoBehaviour
             isWalking = !isWalking;
             if (isWalking)
             {
-                timer = new Timer(walkDuration);
+                timer = new Timer(walkDuration * Jitter());
                 InitWalkDirection();
             }
             else
             {
-                timer = new Timer(restDuration);
+                timer = new Timer(restDuration * Jitter());
+            }
+            if (m_animator != null)
+            {
+                m_animator.SetBool(animatorWalkTag, isWalking);
             }
             return;
         }
@@ -46,5 +59,10 @@ public class RandomWalker : MonoBehaviour
     {
         walkDirection = new Vector3(Random.value - 0.5f, Random.value - 0.5f, 0).normalized;
         // TODO: Look in the direction.
+    }
+
+    private float Jitter()
+    {
+        return Mathf.Max((Random.value - 0.5f) * jitter, 0f);
     }
 }

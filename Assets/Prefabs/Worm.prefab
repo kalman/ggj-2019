@@ -114,9 +114,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64567e0c5f0464616b0fd0322757e89e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  restDuration: 2
+  restDuration: 3
   walkDuration: 1
   walkSpeed: 1
+  jitter: 0.5
 --- !u!114 &3869118307048114104
 MonoBehaviour:
   m_ObjectHideFlags: 0
