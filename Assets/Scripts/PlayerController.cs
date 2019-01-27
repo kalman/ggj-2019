@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     private Collider2D m_collider2D;
     private Rigidbody2D m_rbody2D;
+    private Animator m_spriteAnimator;
 
     private Vector2 moveVector = Vector2.zero;
     private float level;
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
     {
         m_collider2D = GetComponent<Collider2D>();
         m_rbody2D = GetComponent<Rigidbody2D>();
+        m_spriteAnimator = GetComponentInChildren<Animator>();
     }
 
     void Start()
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour
         float vInput = Input.GetAxisRaw("Vertical");
         bool submitDown = Input.GetButtonDown("Submit");
         moveVector = new Vector2(hInput, vInput).normalized * moveSpeed;
+        m_spriteAnimator.SetBool("Walk", moveVector != Vector2.zero);
     }
 
     void FixedUpdate()
