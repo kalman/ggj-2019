@@ -9,6 +9,7 @@ public class Random9Box : MonoBehaviour, Collider2DManager.Listener
     public GameObject wormPrefab;
     [Range(0, 0.05f)]
     public float wormsPerUnit = 0.02f;
+    public int buffer = 0;
 
     private Dictionary<Vector2, Collider2D> boxes = new Dictionary<Vector2, Collider2D>();
 
@@ -20,9 +21,9 @@ public class Random9Box : MonoBehaviour, Collider2DManager.Listener
 
     private void Generate(Vector2 pos)
     {
-        for (int x = -1; x <= 1; x++)
+        for (int x = -1 - buffer; x <= 1 + buffer; x++)
         {
-            for (int y = -1; y <= 1; y++)
+            for (int y = -1 - buffer; y <= 1 + buffer; y++)
             {
                 Vector2 boxPos = new Vector2(pos.x + x, pos.y + y);
                 if (!boxes.ContainsKey(boxPos))
