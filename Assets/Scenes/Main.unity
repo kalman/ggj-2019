@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 536145099}
   m_Layer: 0
   m_Name: HealthOuter
-  m_TagString: Untagged
+  m_TagString: HealthBar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -382,7 +382,7 @@ GameObject:
   - component: {fileID: 1055368348}
   m_Layer: 0
   m_Name: HealthInner
-  m_TagString: Untagged
+  m_TagString: HealthBar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

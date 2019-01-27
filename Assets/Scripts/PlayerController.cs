@@ -40,6 +40,17 @@ public class PlayerController : MonoBehaviour
         bool submitDown = Input.GetButtonDown("Submit");
         moveVector = new Vector2(hInput, vInput).normalized * moveSpeed;
         m_spriteAnimator.SetBool("Walk", moveVector != Vector2.zero);
+
+        if (hInput != 0f)
+        {
+            foreach (var r in GetComponentsInChildren<SpriteRenderer>())
+            {
+                if (r.tag != "HealthBar")
+                {
+                    r.flipX = hInput < 0f;
+                }
+            }
+        }
     }
 
     void FixedUpdate()
