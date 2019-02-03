@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
 
     public float moveSpeed = 1f;
     public Image healthBar;
+    [Range(0f, 1f)]
+    public float foodHealthIncrease = 0.1f;
     public Color shellGoodColor = new Color(0, 0, 1f, 0.5f);
     public Color shellBadColor = new Color(1f, 0, 0, 0.5f);
 
@@ -83,11 +85,10 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Edible edible = other.GetComponent<Edible>();
-        if (edible != null)
+        if (other.tag == "Food")
         {
-            AddHealth(edible.value);
-            edible.Eat();
+            AddHealth(foodHealthIncrease);
+            GameObject.Destroy(other.gameObject);
             return;
         }
 
@@ -102,6 +103,7 @@ public class PlayerController : MonoBehaviour
             var shellRenderer = other.GetComponent<SpriteRenderer>();
             shellRenderer.color = health == 1f ? shellGoodColor : shellBadColor;
             nearbyShells.Add(shellRenderer);
+            return;
         }
     }
 
