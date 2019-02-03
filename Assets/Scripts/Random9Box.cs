@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class Random9Box : MonoBehaviour, Collider2DManager.Listener
 {
+    public static Random9Box instance;
+    Random9Box() { instance = this; }
+
     public Collider2D target;
     public Collider2D boxPrefab;
-    public GameObject wormPrefab;
-    [Range(0, 0.05f)]
-    public float wormsPerUnit = 0.02f;
     public int buffer = 0;
+    [Range(0, 0.05f)]
+    public float foodsPerUnit = 0.02f;
+    public SpriteRenderer foodPrefab;
+    public Sprite[] foodSprites;
+    [Range(0, 0.02f)]
+    public float shellsPerUnit = 0.01f;
+    public SpriteRenderer shellPrefab;
+    public Sprite[] shellSprites;
 
     private Dictionary<Vector2, Collider2D> boxes = new Dictionary<Vector2, Collider2D>();
 
@@ -67,14 +75,23 @@ public class Random9Box : MonoBehaviour, Collider2DManager.Listener
         }
     }
 
-    private void SpawnRandomObjects(Vector3 topLeft, Vector3 bottomRight)
+    private void SpawnRandomObjects(Vector2 topLeft, Vector2 bottomRight)
     {
-        float rand = Random.value;
-        Vector3 areaVector = bottomRight - topLeft;
+        Vector2 areaVector = bottomRight - topLeft;
         float area = areaVector.x * areaVector.y;
-        if (area * wormsPerUnit > rand)
+        int level = PlayerController.instance.Level();
+        if (area * foodsPerUnit > Random.value)
         {
-            GameObject.Instantiate(wormPrefab, topLeft + areaVector / 2f, Quaternion.identity, transform);
+            var foodInstance = Util.InstantiateAs<SpriteRenderer>(foodPrefab, topLeft + areaVector / 2f, transform);
+            var foodSprite = foodSprites[Mathf.Min(level, foodSprites.Length)];
+            foodInstance.sprite = foodSprite;
+        }
+        if (area * shellsPerUnit > Random.value)
+        {
+            var shellInstance = Util.InstantiateAs<SpriteRenderer>(shellPrefab, topLeft + areaVector / 2f, transform);
+            // level+1 because we're spawning shells of the next level up.
+            var shellSprite = shellSprites[Mathf.Min(level + 1, shellSprites.Length)];
+            shellInstance.sprite = shellSprite;
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Edible : MonoBehaviour
 {
-    public float value = 1f;
+    public float value = 0.1f;
 
     public void Eat()
     {

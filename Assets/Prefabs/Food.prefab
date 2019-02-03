@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3869118307048114104}
   - component: {fileID: 1477217456888075162}
   m_Layer: 0
-  m_Name: Worm
+  m_Name: Food
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 959ec308f679847e59c5b50a150ce52d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &3387215398817934955
@@ -118,6 +118,7 @@ MonoBehaviour:
   walkDuration: 1
   walkSpeed: 1
   jitter: 0.5
+  animatorWalkTag: Walk
 --- !u!114 &3869118307048114104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b1a7674748114f9eb17373cbb924e94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 1
+  value: 0.1
 --- !u!61 &1477217456888075162
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -147,10 +148,10 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0

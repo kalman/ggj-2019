@@ -1,36 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+    PlayerController() { instance = this; }
+
     public float moveSpeed = 1f;
-    public float healthBase = 10f;
-    public List<GameObject> shellPrefabs = new List<GameObject>();
-    public SpriteRenderer healthBar;
+    public Image healthBar;
+    public Color shellGoodColor = new Color(0, 0, 1f, 0.5f);
+    public Color shellBadColor = new Color(1f, 0, 0, 0.5f);
 
     private Collider2D m_collider2D;
     private Rigidbody2D m_rbody2D;
     private Animator m_spriteAnimator;
+    private SpriteRenderer m_shellSpriteRenderer;
 
+    private List<SpriteRenderer> nearbyShells = new List<SpriteRenderer>();
     private Vector2 moveVector = Vector2.zero;
-    private float level;
+    private int level;
     private float health;
+
+    public int Level()
+    {
+        return this.level;
+    }
 
     void Awake()
     {
         m_collider2D = GetComponent<Collider2D>();
         m_rbody2D = GetComponent<Rigidbody2D>();
         m_spriteAnimator = GetComponentInChildren<Animator>();
+        foreach (var r in GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (r.tag == "Shell")
+            {
+                m_shellSpriteRenderer = r;
+                break;
+            }
+        }
     }
 
     void Start()
     {
-        SelectShell(shellPrefabs[0]);
-        level = 1f;
-        AddHealth(healthBase / 2f);
+        level = 0;
+        AddHealth(0.5f);
     }
 
     void Update()
@@ -51,16 +69,16 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+
+        if (submitDown)
+        {
+            SwapShell();
+        }
     }
 
     void FixedUpdate()
     {
         m_rbody2D.velocity = moveVector;
-    }
-
-    private void SelectShell(GameObject shellPrefab)
-    {
-        GameObject shell = GameObject.Instantiate(shellPrefab, transform);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -70,16 +88,53 @@ public class PlayerController : MonoBehaviour
         {
             AddHealth(edible.value);
             edible.Eat();
+            return;
+        }
+
+        if (other.tag == "Shell")
+        {
+            if (nearbyShells.Count > 0)
+            {
+                nearbyShells[nearbyShells.Count - 1].color = Color.white;
+            }
+            // TODO: Change color if the player gets enough health while the
+            // shell is active.
+            var shellRenderer = other.GetComponent<SpriteRenderer>();
+            shellRenderer.color = health == 1f ? shellGoodColor : shellBadColor;
+            nearbyShells.Add(shellRenderer);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag == "Shell")
+        {
+            var shellRenderer = other.GetComponent<SpriteRenderer>();
+            shellRenderer.color = Color.white;
+            nearbyShells.Remove(shellRenderer);
+            if (nearbyShells.Count > 0)
+            {
+                nearbyShells[nearbyShells.Count - 1].color =
+                    health == 1f ? shellGoodColor : shellBadColor;
+            }
         }
     }
 
     private void AddHealth(float addHealth)
     {
-        float maxHealth = level * healthBase;
-        health = Mathf.Min(health + addHealth, maxHealth);
-        float healthScale = health / maxHealth;
-        float pxPerUnit = healthBar.sprite.pixelsPerUnit;
-        healthBar.transform.localScale = new Vector3(healthScale, 1f, 1f);
-        // TODO: Make this fill in from the left.
+        health = Mathf.Min(health + addHealth, 1f);
+        healthBar.fillAmount = health;
+    }
+
+    private void SwapShell()
+    {
+        if (health < 1f || nearbyShells.Count == 0)
+        {
+            return;
+        }
+        var nearbyShell = nearbyShells[nearbyShells.Count - 1];
+        m_shellSpriteRenderer.sprite = nearbyShell.sprite;
+        nearbyShells.Remove(nearbyShell);
+        GameObject.Destroy(nearbyShell.gameObject);
     }
 }
