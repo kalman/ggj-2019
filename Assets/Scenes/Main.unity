@@ -547,7 +547,7 @@ MonoBehaviour:
   boxContainer: {fileID: 215997108}
   buffer: 8
   foodsPerUnit: 0.02
-  foodPrefab: {fileID: 3387215398817934954, guid: e18bc8bec42c248dfa64ee3f6863dccc,
+  foodPrefab: {fileID: 1477217456888075162, guid: e18bc8bec42c248dfa64ee3f6863dccc,
     type: 3}
   foodRenderers:
   - {fileID: 1672560883497828734, guid: 3ec5fc9f4c94949018e2f2cd8488608d, type: 3}
