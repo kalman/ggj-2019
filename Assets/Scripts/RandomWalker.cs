@@ -16,13 +16,11 @@ public class RandomWalker : MonoBehaviour
     private bool isWalking;
     private Timer timer;
 
-    void Awake()
-    {
-        m_animator = GetComponent<Animator>();
-    }
-
     void Start()
     {
+        // Must be instantiated in Start because it's setup by setting on a
+        // prefab.
+        m_animator = GetComponentInChildren<Animator>();
         isWalking = true;
         timer = new Timer(walkDuration);
         InitWalkDirection();
